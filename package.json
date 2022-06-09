@@ -1,0 +1,12 @@
+{
+  "name": "Bootcamp-node",
+  "version": "1.0.0",
+  "main": "backend/src/index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
+  "scripts": {
+    "go": "nodemon"
+  }
+}
