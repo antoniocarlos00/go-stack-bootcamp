@@ -49,5 +49,5 @@ app.delete('/project/:id', (request, response) => {
 });
 
 app.listen(3333, () => {
-    console.log('backend iniciado!');
-});
+    console.log('backend iniciado! index porta 3333');
+}); 

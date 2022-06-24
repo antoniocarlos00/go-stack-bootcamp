@@ -1,45 +1,55 @@
-const { response, request } = require('express');
-const express = require('express'); 
+//const { response, request } = require('express');
+
+const { json } = require('express');
+const express = require('express');
+const {uuid} = require('uuidv4');
+
 const app = express(); 
 app.use(express.json());
 
-const project = [];
+//inicio da aula 8 do modulo 3, deixando a aplicação mais funcional
+
+const projects = [];
 
 //buscando uma informação
 app.get('/project', (request, response) => {
   const {title, owner} = request.query;
-  //isso aqui é uma manipulação de query params
-  console.log(owner);
-  console.log(title);
   
-  return response.json([
-    {'nome':'carlos'},
-    {'idade':'21'},
-    {'sexo':'masculino'}
-  ]);//resposta da requisição '/project'
+  return response.json(projects);//resposta da requisição '/project'
 });
 
 //criando uma informação
 app.post('/project', (request, response) => {
-  const body = request.body;
-
-  console.log(body);
-
-  return response.json([
-    {'altura':'1.66'},
-    {'peso':'73'}
-  ]);
+  const {title, owner} = request.query;
+  const project = {id: uuid(), title, owner};
+  
+  projects.push(project);
+  
+  return response.json(project); /*project e não projects por que é pra imprimir o 
+  project recem criado e não a lista toda*/
 });
 
 //alterando uma informação
 app.put('/project/:id', (request, response) => {
-  const params = request.params;
+  const {id} = request.params;
+  const {title, owner} = request.query;
   
-  console.log(params);
+  const projectIndex = projects.findIndex(project => project.id == id);
 
-  return response.json([
-    {'idade':'22'}
-  ]);
+  if (projectIndex < 0){
+    return response.status(400).json({ error: 'project not found :('})
+  }/*confesso que essa parte não entendi direito, mas irei revisar*/
+
+  const project = {
+    id,
+    title,
+    owner
+  };
+
+  projects[projectIndex] = project;
+
+  return response.json(project);
+
 });
 
 //deletando uma informação
@@ -51,5 +61,5 @@ app.delete('/project/:id', (request, response) => {
 });
 
 app.listen(3333, () => {
-    console.log('backend iniciado!');
+    console.log('backend iniciado no index2.js na porta 3333');
 });
